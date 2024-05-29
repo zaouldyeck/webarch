@@ -1,6 +1,6 @@
 # webarch
 Web Archicture Project.
 
-WIP
+Work In Progress.
 
 Stay Tuned!
