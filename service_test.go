@@ -1,42 +1,34 @@
 package architecture
 
 import (
-	"fmt"
 	"testing"
+
+	"go.uber.org/mock/gomock"
 )
 
-type Db map[int]Person
-
-func (m Db) Save(n int, p Person) {
-	m[n] = p
-}
-
-func (m Db) Retrieve(n int) Person {
-	return m[n]
-}
-
 func TestPut(t *testing.T) {
-	mdb := Db{}
+	ctl := gomock.NewController(t)
+	acc := NewMockAccessor(ctl)
 	p := Person{
 		First: "Paul",
 	}
 
-	Put(mdb, 1, p)
+	acc.EXPECT().Save(1, p).MinTimes(1).MaxTimes(1)
 
-	got := mdb.Retrieve(1)
-	if got != p {
-		t.Fatalf("Want %v, got %v", p, got)
-	}
+	Put(acc, 1, p)
+
+	ctl.Finish()
+
 }
 
-func ExamplePut() {
-	mdb := Db{}
-	p := Person{
-		First: "Paul",
-	}
-
-	Put(mdb, 1, p)
-	got := mdb.Retrieve(1)
-	fmt.Println(got)
-	// Output: {Paul}
-}
+//func ExamplePut() {
+//	mdb := Db{}
+//	p := Person{
+//		First: "Paul",
+//	}
+//
+//	Put(mdb, 1, p)
+//	got := mdb.Retrieve(1)
+//	fmt.Println(got)
+//	// Output: {Paul}
+//}
