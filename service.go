@@ -4,10 +4,13 @@ import (
 	"fmt"
 )
 
+// Person is how a person is stored.
 type Person struct {
 	First string
 }
 
+// Accessor is how to retrieve a person.
+// If the person does not exist, return zero value.
 type Accessor interface {
 	Save(n int, p Person)
 	Retrieve(n int) Person
